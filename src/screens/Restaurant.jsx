@@ -89,9 +89,106 @@ const Restaurant = ({route, navigation}) => {
                 style={{width: '100%', height: '100%'}}
               />
             </View>
+            <View
+              style={{
+                width: Dimensions.get('window').width,
+                marginTop: 15,
+                paddingHorizontal: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 20,
+              }}>
+              <Text style={{fontSize: 26, fontWeight: 'bold'}}>
+                {item.name} - {item.price.toFixed(2)}$
+              </Text>
+              <Text tyle={{fontSize: 24}}>{item.description}</Text>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                marginTop: 20,
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 5,
+              }}>
+              <Image
+                source={require('../assets/icons/fire.png')}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+              />
+              <Text style={{color: COLORS.darkgray, fontSize: 18}}>
+                {item.calories.toFixed(2)} cal
+              </Text>
+            </View>
           </View>
         ))}
       </Animated.ScrollView>
+    );
+  }
+
+  function renderOrder() {
+    return (
+      <View style={{backgroundColor: COLORS.lightGray3, padding: 30}}>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingBottom: 20,
+          }}>
+          <Text style={{fontSize: 20, fontWeight: '600'}}>Items in Cart</Text>
+          <Text style={{fontSize: 20, fontWeight: '600'}}>$45</Text>
+        </View>
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            paddingBottom: 20,
+          }}>
+          <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+            <Image
+              source={require('../assets/icons/location.png')}
+              style={{
+                width: 20,
+                height: 20,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text style={{fontSize: 20, fontWeight: '600'}}>Location</Text>
+          </View>
+          <View style={{flexDirection: 'row', gap: 5, alignItems: 'center'}}>
+            <Image
+              source={require('../assets/icons/mastercard.png')}
+              style={{
+                width: 30,
+                height: 30,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text style={{fontSize: 20, fontWeight: '600'}}>888</Text>
+          </View>
+        </View>
+        <View
+          style={{
+          
+            alignItems: 'center',
+            justifyContent: 'center',
+            
+            
+          }}>
+          <TouchableOpacity style={{
+            backgroundColor:COLORS.primary,
+            padding:20,
+            alignItems:'center',
+            width:'100%',
+            borderRadius:50
+
+          }}>
+            <Text style={{color:COLORS.white, fontSize:20, letterSpacing:4, fontWeight:'700'}}>Order</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     );
   }
 
@@ -99,6 +196,7 @@ const Restaurant = ({route, navigation}) => {
     <SafeAreaView style={{flex: 1, backgroundColor: COLORS.lightGray}}>
       {renderHeader()}
       {renderFoodInfo()}
+      {renderOrder()}
     </SafeAreaView>
   );
 };
