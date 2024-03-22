@@ -86,7 +86,7 @@ const Restaurant = ({route, navigation}) => {
 
         orderList.push(newItem);
       }
-      setOrderItems(orderList)
+      setOrderItems(orderList);
     } else {
       if (item.length) {
         if (item[0].qty > 0) {
@@ -95,7 +95,7 @@ const Restaurant = ({route, navigation}) => {
           item[0].total = newQty * price;
         }
       }
-      setOrderItems(orderList)
+      setOrderItems(orderList);
     }
   };
 
@@ -110,16 +110,16 @@ const Restaurant = ({route, navigation}) => {
   };
 
   function getBasketItemCount() {
-    let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+    let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0);
 
-    return itemCount
-}
+    return itemCount;
+  }
 
-function sumOrder() {
-    let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+  function sumOrder() {
+    let total = orderItems.reduce((a, b) => a + (b.total || 0), 0);
 
-    return total.toFixed(2)
-}
+    return total.toFixed(2);
+  }
 
   function renderFoodInfo() {
     return (
@@ -238,7 +238,9 @@ function sumOrder() {
             justifyContent: 'space-between',
             paddingBottom: 20,
           }}>
-          <Text style={{fontSize: 20, fontWeight: '600'}}>{getBasketItemCount()} Items in Cart</Text>
+          <Text style={{fontSize: 20, fontWeight: '600'}}>
+            {getBasketItemCount()} Items in Cart
+          </Text>
           <Text style={{fontSize: 20, fontWeight: '600'}}>${sumOrder()}</Text>
         </View>
         <View
