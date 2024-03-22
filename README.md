@@ -6,4 +6,4 @@ Developed Food Delivery mobile application with React-Native<br/>
 
 <h2> Find the screen gif below </h2>
 
-![](/food.gif)
+![](/food2.gif)
