@@ -9,10 +9,11 @@ import {
   Dimensions,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {COLORS} from '../theme/theme';
+import {COLORS, SIZES} from '../theme/theme';
 
 const Restaurant = ({route, navigation}) => {
   const [restaurant, setRestaurant] = useState(null);
+  const [orderItems, setOrderItems] = React.useState([]);
 
   useEffect(() => {
     let {item} = route?.params;
@@ -66,6 +67,60 @@ const Restaurant = ({route, navigation}) => {
     );
   }
 
+  const handleOrder = (x, menuId, price) => {
+    let orderList = orderItems.slice();
+    let item = orderList.filter(a => a.menuId == menuId);
+
+    if (x == '+') {
+      if (item.length > 0) {
+        let newQty = item[0].qty + 1;
+        item[0].qty = newQty;
+        item[0].total = item[0].qty * price;
+      } else {
+        let newItem = {
+          menuId: menuId,
+          qty: 1,
+          price: price,
+          total: price,
+        };
+
+        orderList.push(newItem);
+      }
+      setOrderItems(orderList)
+    } else {
+      if (item.length) {
+        if (item[0].qty > 0) {
+          let newQty = item[0].qty - 1;
+          item[0].qty = newQty;
+          item[0].total = newQty * price;
+        }
+      }
+      setOrderItems(orderList)
+    }
+  };
+
+  const getOrderQty = menuId => {
+    let orderItem = orderItems.filter(a => a.menuId == menuId);
+
+    if (orderItem.length > 0) {
+      return orderItem[0].qty;
+    }
+
+    return 0;
+  };
+
+  function getBasketItemCount() {
+    let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+
+    return itemCount
+}
+
+function sumOrder() {
+    let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+
+    return total.toFixed(2)
+}
+
   function renderFoodInfo() {
     return (
       <Animated.ScrollView
@@ -88,6 +143,52 @@ const Restaurant = ({route, navigation}) => {
                 resizeMode="cover"
                 style={{width: '100%', height: '100%'}}
               />
+
+              <View
+                style={{
+                  position: 'absolute',
+                  bottom: -20,
+                  width: SIZES.width,
+                  height: 50,
+                  justifyContent: 'center',
+                  flexDirection: 'row',
+                }}>
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopLeftRadius: 25,
+                    borderBottomLeftRadius: 25,
+                  }}
+                  onPress={() => handleOrder('-', item.menuId, item.price)}>
+                  <Text style={{fontSize: 20}}>-</Text>
+                </TouchableOpacity>
+
+                <View
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                  <Text style={{}}>{getOrderQty(item.menuId)}</Text>
+                </View>
+
+                <TouchableOpacity
+                  style={{
+                    width: 50,
+                    backgroundColor: COLORS.white,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    borderTopRightRadius: 25,
+                    borderBottomRightRadius: 25,
+                  }}
+                  onPress={() => handleOrder('+', item.menuId, item.price)}>
+                  <Text style={{fontSize: 20}}>+</Text>
+                </TouchableOpacity>
+              </View>
             </View>
             <View
               style={{
@@ -137,8 +238,8 @@ const Restaurant = ({route, navigation}) => {
             justifyContent: 'space-between',
             paddingBottom: 20,
           }}>
-          <Text style={{fontSize: 20, fontWeight: '600'}}>Items in Cart</Text>
-          <Text style={{fontSize: 20, fontWeight: '600'}}>$45</Text>
+          <Text style={{fontSize: 20, fontWeight: '600'}}>{getBasketItemCount()} Items in Cart</Text>
+          <Text style={{fontSize: 20, fontWeight: '600'}}>${sumOrder()}</Text>
         </View>
         <View
           style={{
@@ -166,26 +267,31 @@ const Restaurant = ({route, navigation}) => {
                 resizeMode: 'contain',
               }}
             />
-            <Text style={{fontSize: 20, fontWeight: '600'}}>888</Text>
+            <Text style={{fontSize: 20, fontWeight: '600'}}>**** 5491</Text>
           </View>
         </View>
         <View
           style={{
-          
             alignItems: 'center',
             justifyContent: 'center',
-            
-            
           }}>
-          <TouchableOpacity style={{
-            backgroundColor:COLORS.primary,
-            padding:20,
-            alignItems:'center',
-            width:'100%',
-            borderRadius:50
-
-          }}>
-            <Text style={{color:COLORS.white, fontSize:20, letterSpacing:4, fontWeight:'700'}}>Order</Text>
+          <TouchableOpacity
+            style={{
+              backgroundColor: COLORS.primary,
+              padding: 20,
+              alignItems: 'center',
+              width: '100%',
+              borderRadius: 50,
+            }}>
+            <Text
+              style={{
+                color: COLORS.white,
+                fontSize: 20,
+                letterSpacing: 4,
+                fontWeight: '700',
+              }}>
+              Order
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
